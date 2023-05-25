@@ -86,12 +86,12 @@ int main(int ac, char **av)
     }
     pid = ft_atoi(av[1]);
     len = strlen(av[2]);
-	usleep(10);
+		printf("%d\n", len);
     ft_len(pid);
     signal(SIGUSR1, adr);
     signal(SIGUSR2, adr);
     i = 0;
-    usleep(10);
+    usleep(100);
     while (len >= 0)
     {
         while (av[2][i] != '\0')
