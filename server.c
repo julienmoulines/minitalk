@@ -8,9 +8,9 @@ sig_atomic_t	g_len = 0;
 
 int	ft_end(siginfo_t *info, unsigned char **str)
 {
-	kill(info->si_pid, SIGUSR2);
+	//kill(info->si_pid, SIGUSR2);
 	printf("Message transmis : %s\n", *str);
-	len = 0;
+	g_len = 0;
 	free(*str);
 	*str = NULL;
 	return (0);
@@ -23,9 +23,9 @@ void	admin(int sig, siginfo_t *info, void *context)
 	static unsigned char		*str;
 	static size_t				i = 0;
 
-	usleep(600);
+	//usleep(600);
 	if (!str)
-		str = calloc(len + 1, sizeof(unsigned char));
+		str = calloc(g_len + 1, sizeof(unsigned char));
 	if (sig == SIGUSR1)
 		byte |= (1 << (7 - count));
 	count++;
@@ -34,6 +34,7 @@ void	admin(int sig, siginfo_t *info, void *context)
 		str[i] = byte;
 		count = 0;
 		byte = 0;
+		//printf("test\n");
 		if (str[i] == '\0')
 		{
 			i = ft_end(info, &str);
@@ -41,18 +42,20 @@ void	admin(int sig, siginfo_t *info, void *context)
 		}
 		i++;
 	}
-	kill(info->si_pid, SIGUSR1);
+	//kill(info->si_pid, SIGUSR1);
 }
 
 void	count_len(int sig, siginfo_t *info, void *context)
 {
 	if (sig == SIGUSR1)
 	{
-		len++;
+		g_len++;
+		//kill(info->si_pid, SIGUSR1);
 	}
 	else if (sig == SIGUSR2)
 	{
-		len = len * -1;
+		g_len = g_len * -1;
+		//kill(info->si_pid, SIGUSR2);
 	}
 }
 
@@ -69,15 +72,16 @@ int	main(void)
 		sa.sa_sigaction = count_len;
 		sigaction(SIGUSR1, &sa, NULL);
 		sigaction(SIGUSR2, &sa, NULL);
-		while (len >= 0)
+		while (g_len >= 0)
 			pause();
-		printf("%d\n", len);
-		len *= -1;
+		printf("%d\n", g_len);
+		g_len *= -1;
 		sa.sa_flags = SA_SIGINFO;
 		sa.sa_sigaction = admin;
 		sigaction(SIGUSR1, &sa, NULL);
 		sigaction(SIGUSR2, &sa, NULL);
-		while (len != 0)
+		//usleep(500);
+		while (g_len != 0)
 			pause();
 	}
 	return (0);

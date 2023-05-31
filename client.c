@@ -35,11 +35,12 @@ static int ft_atoi(char *str)
 
 void ft_len(int pid)
 {
+	usleep(1500);
     while (len > 0)
     {
         kill(pid, SIGUSR1);
-        usleep(10);
         len--;
+		usleep(500);
     }
     kill(pid, SIGUSR2);
 }
@@ -52,21 +53,22 @@ void ft_atob(int pid, char c)
 
     bit = 0;
     mask = 0x80;
+	usleep(500);
     while (bit < 8)
     {
-        if (flag > 0)
-            pause();
+		usleep(100);
+       // if (flag > 0)
+         //   pause();
         if (c & mask)
             kill(pid, SIGUSR1);
         else
             kill(pid, SIGUSR2);
+		//pause();
         mask >>= 1;
         bit++;
         flag++;
     }
 }
-
-
 
 void adr(int sig)
 {
@@ -87,15 +89,16 @@ int main(int ac, char **av)
     pid = ft_atoi(av[1]);
     len = strlen(av[2]);
 		printf("%d\n", len);
-    ft_len(pid);
     signal(SIGUSR1, adr);
     signal(SIGUSR2, adr);
+	ft_len(pid);
+	usleep(500);
     i = 0;
-    usleep(100);
     while (len >= 0)
     {
         while (av[2][i] != '\0')
         {
+			//printf("test\n");
 			if (av[2][i] == '\0')
             {
                 ft_atob(pid, '\0');
