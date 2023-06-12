@@ -35,38 +35,28 @@ static int ft_atoi(char *str)
 
 void ft_len(int pid)
 {
-	usleep(1500);
     while (len > 0)
     {
         kill(pid, SIGUSR1);
+        usleep(50);
         len--;
-		usleep(500);
     }
     kill(pid, SIGUSR2);
 }
 
 void ft_atob(int pid, char c)
 {
-    int bit;
-    int mask;
-    static int flag = 0;
-
-    bit = 0;
-    mask = 0x80;
-	usleep(500);
-    while (bit < 8)
-    {
-		usleep(100);
-       // if (flag > 0)
-         //   pause();
+    int mask = 1 << 7;
+	usleep(50);
+    while (mask)
+    {       
         if (c & mask)
             kill(pid, SIGUSR1);
         else
             kill(pid, SIGUSR2);
-		//pause();
         mask >>= 1;
-        bit++;
-        flag++;
+		pause();
+		usleep(50);
     }
 }
 
@@ -83,22 +73,20 @@ int main(int ac, char **av)
 
     if (ac != 3)
     {
-        printf("Utilisation : %s PID MESSAGE\n", av[0]);
+        printf("Mauvais arguments\nVeuillez entrer : %s PID MESSAGE\n", av[0]);
         return 1;
     }
     pid = ft_atoi(av[1]);
     len = strlen(av[2]);
-		printf("%d\n", len);
+    ft_len(pid);
     signal(SIGUSR1, adr);
     signal(SIGUSR2, adr);
-	ft_len(pid);
-	usleep(500);
     i = 0;
+    usleep(500);
     while (len >= 0)
     {
         while (av[2][i] != '\0')
         {
-			//printf("test\n");
 			if (av[2][i] == '\0')
             {
                 ft_atob(pid, '\0');
