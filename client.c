@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
-#include <string.h>
-#include <pthread.h>
+#include "minitalk.h"
 
 sig_atomic_t len = 0;
 
