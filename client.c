@@ -3,8 +3,22 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+#include <pthread.h>
 
 sig_atomic_t len = 0;
+
+void	ft_adr(int sig, siginfo_t *sig_info, void *context)
+{
+	(void)sig_info;
+	(void)context;
+	if (sig == SIGUSR1)
+		len = 1;
+	else if (sig == SIGUSR2)
+	{
+		printf("La chaine a été passé au serveur avec succès.\n");
+		exit(EXIT_SUCCESS);
+	}
+}
 
 static int ft_atoi(char *str)
 {
@@ -33,54 +47,56 @@ static int ft_atoi(char *str)
     return (result * sign);
 }
 
-void ft_len(int pid)
+void ft_len(int pid, int a_len)
 {
-    while (len > 0)
-    {
-        kill(pid, SIGUSR1);
-        usleep(50);
-        len--;
-    }
-    kill(pid, SIGUSR2);
+  printf("La chaine compte %d caractères.\n", a_len);
+  while (a_len > 0)
+	 {
+		  len = 0;
+	 	  kill(pid, SIGUSR1);
+		  a_len--;
+		  while (!len)
+			 usleep(1);
+	 }
+	 kill(pid, SIGUSR2);
 }
 
 void ft_atob(int pid, char c)
 {
-    int mask = 1 << 7;
-	usleep(50);
-    while (mask)
-    {       
-        if (c & mask)
-            kill(pid, SIGUSR1);
-        else
-            kill(pid, SIGUSR2);
-        mask >>= 1;
-		pause();
-		usleep(50);
-    }
-}
-
-void adr(int sig)
-{
-    if (sig == SIGUSR2)
-        len = -1;
+    unsigned char bit_cmp;
+    int mask = 7;
+    bit_cmp = 1u << mask;
+   while (mask >= 0)
+	{
+		len = 0;
+		if (bit_cmp & c)
+			kill(pid, SIGUSR1);
+		else
+			kill(pid, SIGUSR2);
+		while (!len)
+			usleep(1);
+		mask--;
+		bit_cmp >>= 1;
+	}
 }
 
 int main(int ac, char **av)
 {
     int pid;
     long int i;
-
+    struct sigaction sa;
+  sa.sa_sigaction = &ft_adr;
+	sa.sa_flags = SA_SIGINFO;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGUSR2, &sa, NULL);
+	sigaction(SIGUSR1, &sa, NULL);
     if (ac != 3)
     {
         printf("Mauvais arguments\nVeuillez entrer : %s PID MESSAGE\n", av[0]);
         return 1;
     }
     pid = ft_atoi(av[1]);
-    len = strlen(av[2]);
-    ft_len(pid);
-    signal(SIGUSR1, adr);
-    signal(SIGUSR2, adr);
+    ft_len(pid, strlen(av[2]));
     i = 0;
     usleep(500);
     while (len >= 0)
