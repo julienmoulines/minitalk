@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/julienmoulines/42/minitalk_42_final/SRCS",
+      "program": "/Users/julienmoulines/42/minitalk_42_final/SRCS/build/Debug/outDebug"
+    }
+  ]
+}

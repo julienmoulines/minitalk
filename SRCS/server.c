@@ -11,18 +11,19 @@
 /* ************************************************************************** */
 
 #include "../INCLUDES/minitalk.h"
-#include <signal.h>
 
 int	main(void)
 {
 	struct sigaction	sa;
 
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaddset(&sa.sa_mask, SIGQUIT);
+	sa.sa_sigaction = &count_g_len;
+	sa.sa_flags = SA_SIGINFO;
 	while (1)
 	{
 		ft_printf("PID du serveur : %d\n", getpid());
-		sa.sa_sigaction = &count_g_len;
-		sa.sa_flags = SA_SIGINFO;
-		sigemptyset(&sa.sa_mask);
 		if (sigaction(SIGUSR1, &sa, NULL) == -1
 			|| sigaction(SIGUSR2, &sa, NULL) == -1)
 			exit(1);

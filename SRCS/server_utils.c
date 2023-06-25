@@ -18,6 +18,7 @@ void	count_g_len(int sig, siginfo_t *info, void *context)
 {
 	struct sigaction	sa;
 
+	ft_bzero(&sa, sizeof(struct sigaction));
 	(void)context;
 	if (sig == SIGUSR1)
 		g_len++;
@@ -64,6 +65,7 @@ int	ft_end(siginfo_t *info, unsigned char **str, size_t *i)
 {
 	struct sigaction	sa;
 
+	ft_bzero(&sa, sizeof(struct sigaction));
 	if ((*str)[*i] == '\0')
 	{
 		printf("Message transmis : %s\n\n", *str);
