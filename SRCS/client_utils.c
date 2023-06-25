@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmouline <jmouline@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmouline <jul.moulines@free.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 01:23:28 by jmouline          #+#    #+#             */
-/*   Updated: 2023/06/25 02:53:20 by jmouline         ###   ########.fr       */
+/*   Updated: 2023/06/25 23:25:05 by jmouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_adr(int sig, siginfo_t *sig_info, void *context)
 		g_len = 1;
 	else if (sig == SIGUSR2)
 	{
-		printf("La chaine a été passé au serveur avec succès.\n");
+		ft_printf("La chaine a été passé au serveur avec succès.\n");
 		exit(EXIT_SUCCESS);
 	}
 }

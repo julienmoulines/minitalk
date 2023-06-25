@@ -38,7 +38,7 @@ void	ft_malloc(unsigned char **str, size_t len)
 	*str = malloc(len);
 	if (!str)
 	{
-		printf("Erreur pendant l'allocation de la chaine à afficher");
+		ft_printf("Erreur pendant l'allocation de la chaine à afficher");
 		exit(1);
 	}
 	return ;
@@ -79,7 +79,7 @@ int	ft_end(siginfo_t *info, unsigned char **str, size_t *i)
 	ft_bzero(&sa, sizeof(struct sigaction));
 	if ((*str)[*i] == '\0')
 	{
-		printf("Message transmis : %s\n\n", *str);
+		ft_printf("Message transmis : %s\n\n", *str);
 		kill(info->si_pid, SIGUSR2);
 		g_len = 0;
 		free(*str);
