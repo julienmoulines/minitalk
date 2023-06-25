@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmouline <jul.moulines@free.fr>            +#+  +:+       +#+        */
+/*   By: jmouline <jmouline@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 20:24:31 by jmouline          #+#    #+#             */
-/*   Updated: 2023/06/23 07:15:00 by jmouline         ###   ########.fr       */
+/*   Updated: 2023/06/25 02:14:28 by jmouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int			ft_memcmp(const void *s1, const void *s2, size_t n);
 char		*ft_strnstr(const char *s1, const char *s2, size_t len);
 void		*ft_calloc(size_t nb_element, size_t nb_octe);
 char		*ft_strdup(const char *s);
+int			ft_atoi(const char *str);
 
 int			ft_putchar_fd(char c, int fd);
 int			ft_putstr_fd(char *s, int fd);
@@ -71,8 +72,8 @@ void		ft_lstclear(t_list **lst, void (*del)(void*));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
-int	ft_puthexa(unsigned long int number, char type);
-int	ft_format_and_print(va_list args, char type);
-int	ft_printf(const char *format, ...);
+int			ft_puthexa(unsigned long int number, char type);
+int			ft_format_and_print(va_list args, char type);
+int			ft_printf(const char *format, ...);
 
 #endif
