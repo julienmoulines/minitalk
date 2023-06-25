@@ -33,6 +33,17 @@ void	count_g_len(int sig, siginfo_t *info, void *context)
 	kill(info->si_pid, SIGUSR1);
 }
 
+void	ft_malloc(unsigned char **str, size_t len)
+{
+	*str = malloc(len);
+	if (!str)
+	{
+		printf("Erreur pendant l'allocation de la chaine à afficher");
+		exit(1);
+	}
+	return ;
+}
+
 void	admin(int sig, siginfo_t *info, void *context)
 {
 	static unsigned char	byte = 0;
@@ -42,7 +53,7 @@ void	admin(int sig, siginfo_t *info, void *context)
 
 	(void)context;
 	if (str == NULL)
-		str = malloc(sizeof(unsigned char) * g_len + 1);
+		ft_malloc(&str, sizeof(unsigned char) * g_len + 1);
 	if (sig == SIGUSR1)
 		byte |= (1 << bit_index);
 	else if (sig == SIGUSR2)
